@@ -132,20 +132,19 @@ app.post("/api/gemini/insights", async (req, res) => {
   // Aggregate user stats for prompt injection
   const totalTripCo2 = trips.reduce((sum: number, t: any) => sum + (t.co2_emission || t.co2 || 0), 0);
   const totalTripDistance = trips.reduce((sum: number, t: any) => sum + (t.distance || 0), 0);
-  
+
   const totalEnergyCo2 = energyLogs.reduce((sum: number, e: any) => sum + (e.co2_emission || e.co2 || 0), 0);
   const totalMealCo2 = meals.reduce((sum: number, m: any) => sum + (m.co2_emission || m.co2 || 0), 0);
   const totalCo2 = totalTripCo2 + totalEnergyCo2 + totalMealCo2;
 
   // Let's create realistic fallbacks based on actual user data
   const fallbackInsights = {
-    summary: `You have tracked a total of ${(totalCo2).toFixed(1)} kg CO₂ overall. Great job starting your tracking! Your biggest carbon footprint category is ${
-      totalTripCo2 > totalEnergyCo2 && totalTripCo2 > totalMealCo2
+    summary: `You have tracked a total of ${(totalCo2).toFixed(1)} kg CO₂ overall. Great job starting your tracking! Your biggest carbon footprint category is ${totalTripCo2 > totalEnergyCo2 && totalTripCo2 > totalMealCo2
         ? "Trips & Travel"
         : totalEnergyCo2 > totalMealCo2
           ? "Home Energy Usage"
           : "Dietary Footprint"
-    }. Focused reduction here will yield the highest impact.`,
+      }. Focused reduction here will yield the highest impact.`,
     tips: [
       totalTripDistance > 0 && totalTripCo2 > 0
         ? `Commuting sustainably: Switching some vehicle trips to bus, walking, or hybrid/electric travel would save up to ${(totalTripCo2 * 0.4).toFixed(1)} kg CO2 per month.`
@@ -215,6 +214,85 @@ app.post("/api/gemini/insights", async (req, res) => {
   }
 });
 
+// 3. CHATBOT (EcoBot conversational AI)
+app.post("/api/gemini/chat", async (req, res) => {
+  const { message, trips = [], energyLogs = [], meals = [], userName = "there" } = req.body;
+
+  if (!message) {
+    return res.status(400).json({ error: "Message is required" });
+  }
+
+  const fallbackResponse = {
+    response: `Hi ${userName}! I'm EcoBot. Here are some quick sustainability tips:\n\n1. **Walk or bike** for trips under 5km — zero emissions and max EcoBucks.\n2. **Switch to LED bulbs** — they use 75% less energy.\n3. **Eat more plant-based meals** — vegetarian meals have 1.5 kg CO₂ vs 4.5 kg for non-veg.\n4. **Unplug devices** — phantom power can be 10% of your bill.\n\nWhat would you like to know more about?`,
+    suggestedTipId: null,
+    isFallback: true,
+  };
+
+  try {
+    if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === "MY_GEMINI_API_KEY") {
+      return res.json(fallbackResponse);
+    }
+
+    const ai = getGeminiClient();
+
+    const totalTripCo2 = trips.reduce((sum: number, t: any) => sum + (t.co2_emission || 0), 0);
+    const totalTripDistance = trips.reduce((sum: number, t: any) => sum + (t.distance || 0), 0);
+    const totalEnergyCo2 = energyLogs.reduce((sum: number, e: any) => sum + (e.co2_emission || 0), 0);
+    const totalMealCo2 = meals.reduce((sum: number, m: any) => sum + (m.co2_emission || 0), 0);
+    const totalCo2 = totalTripCo2 + totalEnergyCo2 + totalMealCo2;
+
+    const contextSummary = `
+User context:
+- Name: ${userName}
+- Total lifetime CO₂: ${totalCo2.toFixed(1)} kg
+- Travel: ${totalTripDistance.toFixed(1)} km, ${totalTripCo2.toFixed(1)} kg CO₂
+- Energy: ${totalEnergyCo2.toFixed(1)} kg CO₂
+- Meals logged: ${meals.length} (${meals.filter((m: any) => m.type === "veg").length} veg, ${meals.filter((m: any) => m.type === "non-veg").length} non-veg)
+`;
+
+    const prompt = `${contextSummary}
+
+The user message is: "${message}"
+
+You are EcoBot, a friendly sustainability assistant. Respond in a warm, conversational tone.
+Keep responses concise (2-4 sentences). Offer specific, actionable advice based on their data.
+If they ask about emissions, use the constants: Car=0.17, Bus=0.08, Train=0.04, Walk/Bike=0 kg/km; Electricity=0.005 kg/₹, Gas=0.0025 kg/₹; Veg meal=1.5 kg, Non-veg meal=4.5 kg.
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            response: {
+              type: Type.STRING,
+              description: "The friendly chatbot response to the user.",
+            },
+            suggestedTipId: {
+              type: Type.STRING,
+              description: "If the response includes a specific eco tip, reference its ID. Otherwise null.",
+            },
+          },
+          required: ["response"],
+        },
+      },
+    });
+
+    if (response && response.text) {
+      const parsed = JSON.parse(response.text.trim());
+      return res.json({ ...parsed, isFallback: false });
+    } else {
+      throw new Error("Empty response from Gemini.");
+    }
+  } catch (error: any) {
+    console.error("Gemini Chat Error:", error.message || error);
+    return res.json(fallbackResponse);
+  }
+});
+
 // ----------------------------------------------------------------------
 // Vite Dev Server / Production Servings
 // ----------------------------------------------------------------------
@@ -235,8 +313,8 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`EcoTrack secure fullstack server running on http://0.0.0.0:${PORT}`);
+  app.listen(PORT, "127.0.0.1", () => {
+    console.log(`EcoTrack running on http://localhost:${PORT}`);
   });
 }
 

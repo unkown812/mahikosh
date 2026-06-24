@@ -3,43 +3,55 @@ export interface UserProfile {
   email: string;
   displayName: string;
   eco_bucks: number;
-  level: "EcoStarter" | "Green Hero" | "Sustainable Star" | "Earth Guardian";
+  level: 1 | 2 | 3 | 4;
   total_co2: number;
   goals: {
-    monthly_co2_target: number; // in kg CO2
+    monthly_co2_target: number;
   };
 }
 
-export type TravelMode = "petrol_car" | "electric_car" | "public_transit" | "active_travel";
+export type TravelMode = "car" | "bus" | "train" | "walk-bike";
 
 export interface TripLog {
   id: string;
   userId: string;
-  distance: number; // in km
+  date: string;
   mode: TravelMode;
-  co2_emission: number; // in kg
+  distance: number;
+  duration: number;
+  co2_emission: number;
+  routeCoordinates: { lat: number; lng: number }[];
   createdAt: string;
 }
 
 export interface MealLog {
   id: string;
   userId: string;
-  foodName: string;
+  date: string;
   type: "veg" | "non-veg";
-  co2_emission: number; // in kg
   description: string;
-  confidence: number;
-  imageUrl?: string; // base64 representation or fallback
+  co2_emission: number;
+  image_url: string | null;
   createdAt: string;
 }
 
 export interface EnergyLog {
   id: string;
   userId: string;
-  electricity_bill: number; // kWh
-  gas_bill: number; // kg of LPG
-  co2_emission: number; // in kg
+  month: string;
+  year: number;
+  electricity_bill: number;
+  gas_bill: number;
+  co2_emission: number;
   createdAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+  suggestedTipId?: string;
 }
 
 export interface AIInsight {
@@ -52,7 +64,7 @@ export interface AIInsight {
 export interface RewardItem {
   id: string;
   title: string;
-  cost: number; // cost in EcoBucks
+  cost: number;
   description: string;
   provider: string;
   category: "transport" | "energy" | "lifestyle" | "food";

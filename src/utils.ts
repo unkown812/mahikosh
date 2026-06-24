@@ -1,113 +1,149 @@
 import { TravelMode } from "./types";
 
-// Standard Carbon footprint constants (in kg CO2 per unit)
 export const EMISSION_FACTORS = {
-  // Trips: kg CO2 emitted per km
   travel: {
-    petrol_car: 0.20,
-    electric_car: 0.05,
-    public_transit: 0.08,
-    active_travel: 0,
+    car: 0.17,
+    bus: 0.08,
+    train: 0.04,
+    "walk-bike": 0,
   },
-  // Indian national factors for home utilities
   energy: {
-    electricity_kwh: 0.82, // 0.82 kg CO2 per kWh (Indian grid mix)
-    gas_kg: 1.50,          // 1.50 kg CO2 per kg of LPG
-  }
+    electricity_per_inr: 0.005,
+    gas_per_inr: 0.0025,
+  },
+  food: {
+    veg: 1.5,
+    "non-veg": 4.5,
+  },
 };
 
-// Travel mode labels
 export const TRAVEL_MODE_LABELS: Record<TravelMode, string> = {
-  petrol_car: "Petrol/Diesel Car",
-  electric_car: "Electric Vehicle (EV)",
-  public_transit: "Public Transit (Bus/Metro)",
-  active_travel: "Active Travel (Walking/Cycling)"
+  car: "Car",
+  bus: "Bus",
+  train: "Train",
+  "walk-bike": "Walk / Bike",
 };
 
-/**
- * Calculates CO2 emission for travel based on mode and distance
- */
 export function calculateTravelCo2(mode: TravelMode, distance: number): number {
   return distance * EMISSION_FACTORS.travel[mode];
 }
 
-/**
- * Calculates CO2 emission for energy bills based on consumption
- */
-export function calculateEnergyCo2(kwh: number, lpgKg: number): number {
-  return (kwh * EMISSION_FACTORS.energy.electricity_kwh) + (lpgKg * EMISSION_FACTORS.energy.gas_kg);
+export function calculateEnergyCo2(electricityInr: number, gasInr: number): number {
+  return (electricityInr * EMISSION_FACTORS.energy.electricity_per_inr) +
+         (gasInr * EMISSION_FACTORS.energy.gas_per_inr);
 }
 
-/**
- * Calculates EcoBucks points earned for logging a trip
- */
 export function calculateTripEcoBucks(mode: TravelMode, distance: number): number {
   switch (mode) {
-    case "active_travel":
-      return Math.round(distance * 10); // Highest bonus for active commuting!
-    case "public_transit":
-      return Math.round(distance * 4);  // solid bonus for transit
-    case "electric_car":
-      return Math.round(distance * 2);  // cleaner alternative
-    case "petrol_car":
-      return Math.max(1, Math.round(distance * 0.5)); // min 1 point for conscious tracking
+    case "walk-bike":
+      return Math.round(distance * 10);
+    case "train":
+      return Math.round(distance * 6);
+    case "bus":
+      return Math.round(distance * 4);
+    case "car":
+      return Math.max(1, Math.round(distance * 0.5));
     default:
       return 0;
   }
 }
 
-/**
- * Level mapping determined by cumulative EcoBucks
- */
-export function determineEcoLevel(ecoBucks: number): "EcoStarter" | "Green Hero" | "Sustainable Star" | "Earth Guardian" {
-  if (ecoBucks < 150) return "EcoStarter";
-  if (ecoBucks < 500) return "Green Hero";
-  if (ecoBucks < 1200) return "Sustainable Star";
-  return "Earth Guardian";
+export function determineEcoLevel(ecoBucks: number): 1 | 2 | 3 | 4 {
+  if (ecoBucks < 500) return 1;
+  if (ecoBucks < 1500) return 2;
+  if (ecoBucks < 5000) return 3;
+  return 4;
 }
 
-/**
- * Standard rewards catalog
- */
+export function haversineDistance(
+  lat1: number, lng1: number,
+  lat2: number, lng2: number
+): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+export const ECO_TIPS = [
+  {
+    id: "tip1",
+    category: "travel" as const,
+    title: "Walk or bike for short trips",
+    description: "Replace car trips under 5km with walking or cycling. Zero emissions and earns max EcoBucks!",
+    impact: "high" as const,
+    bucksReward: 30,
+  },
+  {
+    id: "tip2",
+    category: "food" as const,
+    title: "Try meatless Mondays",
+    description: "One vegetarian meal saves ~3 kg CO₂ compared to meat. Start with one day a week.",
+    impact: "medium" as const,
+    bucksReward: 20,
+  },
+  {
+    id: "tip3",
+    category: "energy" as const,
+    title: "Unplug phantom loads",
+    description: "Devices on standby can account for 10% of your electricity bill. Unplug when not in use.",
+    impact: "medium" as const,
+    bucksReward: 25,
+  },
+  {
+    id: "tip4",
+    category: "travel" as const,
+    title: "Use public transit",
+    description: "Buses and trains produce 50-75% less CO₂ per km than cars. Switch at least once a week.",
+    impact: "high" as const,
+    bucksReward: 35,
+  },
+  {
+    id: "tip5",
+    category: "energy" as const,
+    title: "Switch to LED bulbs",
+    description: "LEDs use 75% less energy and last 25x longer than incandescent bulbs.",
+    impact: "high" as const,
+    bucksReward: 40,
+  },
+  {
+    id: "tip6",
+    category: "food" as const,
+    title: "Eat seasonal & local",
+    description: "Locally sourced seasonal food reduces transport emissions by up to 10x.",
+    impact: "low" as const,
+    bucksReward: 15,
+  },
+];
+
 export const REWARDS_CATALOG = [
   {
     id: "r1",
-    title: "1 Month Public Transit Pass",
-    cost: 300,
-    description: "Get a 50% discount coupon on your local city bus or rail transit passes.",
-    provider: "MetroTransit Co.",
-    category: "transport" as const,
-  },
-  {
-    id: "r2",
     title: "Tree Planting Initiative",
-    cost: 150,
-    description: "Redeem 150 EcoBucks to plant a native broadleaf sapling in your name and receive a digital certificate.",
+    cost: 1000,
+    description: "Redeem 1000 EcoBucks to plant a native tree in your name and receive a digital certificate.",
     provider: "Grow-Green Foundation",
     category: "lifestyle" as const,
   },
   {
-    id: "r3",
-    title: "Smart Smart-Plug Discount",
-    cost: 250,
-    description: "Receive a 30% discount on Smart Plugs to automate device shutdown and avoid phantom power logs.",
-    provider: "EcoVolts SmartHome",
-    category: "energy" as const,
-  },
-  {
-    id: "r4",
-    title: "Sustainable Bamboo Cutlery Kit",
-    cost: 200,
-    description: "Reduce single-use plastic waste on the go with a zero-waste reusable organic bamboo travel dining kit.",
-    provider: "EarthBazaar Marketplace",
+    id: "r2",
+    title: "Eco-Store Discount Voucher",
+    cost: 500,
+    description: "Get a 25% discount on sustainable products at partner eco-stores.",
+    provider: "EcoStore Network",
     category: "lifestyle" as const,
   },
   {
-    id: "r5",
-    title: "Eco Vegan Gourmet Dessert Voucher",
-    cost: 100,
-    description: "Enjoy a free organic, plant-based chocolate avocado pie or gluten-free cake slice at GreenEats.",
-    provider: "GreenEats Bakery",
-    category: "food" as const,
-  }
+    id: "r3",
+    title: "Carbon Offset Certificate",
+    cost: 2000,
+    description: "Redeem 2000 EcoBucks to offset 100 kg of CO₂ through verified carbon credits.",
+    provider: "CarbonClear",
+    category: "energy" as const,
+  },
 ];
