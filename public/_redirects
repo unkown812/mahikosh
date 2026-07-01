@@ -1,23 +1,2 @@
 # Netlify Redirects for MahiKosh
-# https://MahiKosh-solution.netlify.app/
-
-# SPA fallback — all routes serve index.html
-/*    /index.html    200
-
-# Force HTTPS
-*   https://MahiKosh-solution.netlify.app/:splat   301!
-
-# Redirect www to non-www
-www.MahiKosh.app/*    https://MahiKosh-solution.netlify.app/:splat    301!
-
-# Cache static assets aggressively
-/assets/*    /assets/:splat    200
-  Cache-Control: public, max-age=31536000, immutable
-
-# Cache blog pages (1 week)
-/blog/*    /blog/:splat    200
-  Cache-Control: public, max-age=604800, immutable
-
-# Do not cache HTML
-/index.html    /index.html    200
-  Cache-Control: no-cache, no-store, must-revalidate
+# https://mahikosh-solution.netlify.app/
