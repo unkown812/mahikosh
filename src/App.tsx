@@ -34,13 +34,13 @@ const LEVEL_LABELS: Record<number, string> = {
 type Tab = "dashboard" | "travel" | "food" | "energy" | "rewards" | "chatbot" | "tips";
 
 const TAB_TITLES: Record<string, string> = {
-  dashboard: "Dashboard — EcoTrack Carbon Footprint Tracker",
-  travel: "Travel CO₂ Tracker — EcoTrack",
-  food: "AI Meal Scanner — EcoTrack",
-  energy: "Home Energy Logger — EcoTrack",
-  rewards: "EcoBucks Rewards Marketplace — EcoTrack",
-  chatbot: "EcoBot AI Sustainability Assistant — EcoTrack",
-  tips: "Eco Tips & Sustainability Guide — EcoTrack",
+  dashboard: "Dashboard — MahiKosh Carbon Footprint Tracker",
+  travel: "Travel CO₂ Tracker — MahiKosh",
+  food: "AI Meal Scanner — MahiKosh",
+  energy: "Home Energy Logger — MahiKosh",
+  rewards: "EcoBucks Rewards Marketplace — MahiKosh",
+  chatbot: "EcoBot AI Sustainability Assistant — MahiKosh",
+  tips: "Eco Tips & Sustainability Guide — MahiKosh",
 };
 
 const defaultProfile = (uid: string, email: string, name: string): UserProfile => ({
@@ -70,7 +70,7 @@ export default function App() {
   const [authReady, setAuthReady] = useState(false);
 
   useEffect(() => {
-    document.title = TAB_TITLES[activeTab] || "EcoTrack — AI Carbon Footprint Tracker";
+    document.title = TAB_TITLES[activeTab] || "MahiKosh — AI Carbon Footprint Tracker";
   }, [activeTab]);
 
   // ─── Initial data load: Firestore if authed, else localStorage ─────
@@ -99,12 +99,12 @@ export default function App() {
           setRedeemedRewards(fbRewards);
         } else {
           // ── localStorage path ──
-          const savedProfile = localStorage.getItem("ecotrack_profile");
-          const savedTrips = localStorage.getItem("ecotrack_trips");
-          const savedMeals = localStorage.getItem("ecotrack_meals");
-          const savedEnergy = localStorage.getItem("ecotrack_energy");
-          const savedRewards = localStorage.getItem("ecotrack_rewards");
-          const savedTips = localStorage.getItem("ecotrack_completed_tips");
+          const savedProfile = localStorage.getItem("MahiKosh_profile");
+          const savedTrips = localStorage.getItem("MahiKosh_trips");
+          const savedMeals = localStorage.getItem("MahiKosh_meals");
+          const savedEnergy = localStorage.getItem("MahiKosh_energy");
+          const savedRewards = localStorage.getItem("MahiKosh_rewards");
+          const savedTips = localStorage.getItem("MahiKosh_completed_tips");
 
           if (savedProfile) setProfile(JSON.parse(savedProfile));
           if (savedTrips) setTrips(JSON.parse(savedTrips));
@@ -126,12 +126,12 @@ export default function App() {
   // ─── Sync helpers ──────────────────────────────────────────────────
 
   const saveToLocalStorage = useCallback((p: UserProfile, t: TripLog[], m: MealLog[], e: EnergyLog[], r: RewardItem[], tips: string[]) => {
-    localStorage.setItem("ecotrack_profile", JSON.stringify(p));
-    localStorage.setItem("ecotrack_trips", JSON.stringify(t));
-    localStorage.setItem("ecotrack_meals", JSON.stringify(m));
-    localStorage.setItem("ecotrack_energy", JSON.stringify(e));
-    localStorage.setItem("ecotrack_rewards", JSON.stringify(r));
-    localStorage.setItem("ecotrack_completed_tips", JSON.stringify(tips));
+    localStorage.setItem("MahiKosh_profile", JSON.stringify(p));
+    localStorage.setItem("MahiKosh_trips", JSON.stringify(t));
+    localStorage.setItem("MahiKosh_meals", JSON.stringify(m));
+    localStorage.setItem("MahiKosh_energy", JSON.stringify(e));
+    localStorage.setItem("MahiKosh_rewards", JSON.stringify(r));
+    localStorage.setItem("MahiKosh_completed_tips", JSON.stringify(tips));
   }, []);
 
   const computeProfile = useCallback((
@@ -317,7 +317,7 @@ export default function App() {
     setCompletedTips([]);
     const reset: UserProfile = defaultProfile(uid, email, displayName);
     setProfile(reset);
-    localStorage.setItem("ecotrack_profile", JSON.stringify(reset));
+    localStorage.setItem("MahiKosh_profile", JSON.stringify(reset));
     setActiveTab("dashboard");
   };
 
@@ -357,7 +357,7 @@ export default function App() {
               <div className="w-9 h-9 bg-accent border-1.5 border-black rounded-xl shadow-hard-offset flex items-center justify-center text-white scale-90 sm:scale-100">
                 <Leaf className="w-5 h-5 fill-white/20" />
               </div>
-              <span className="font-display font-bold text-lg sm:text-xl tracking-tight text-fg">EcoTrack</span>
+              <span className="font-display font-bold text-lg sm:text-xl tracking-tight text-fg">MahiKosh</span>
             </div>
 
             <div className="flex items-center gap-3 sm:gap-4">

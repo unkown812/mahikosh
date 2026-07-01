@@ -1,7 +1,7 @@
 <div align="center">
   <br />
-  <img src="public/favicon.svg" width="80" alt="EcoTrack Logo" />
-  <h1 align="center">EcoTrack</h1>
+  <img src="public/favicon.svg" width="80" alt="MahiKosh Logo" />
+  <h1 align="center">MahiKosh</h1>
   <p align="center">
     <strong>AI-Powered Carbon Footprint Tracker & Sustainability Gamification Platform</strong>
   </p>
@@ -63,7 +63,7 @@ Fonts:     Inter, Space Grotesk, JetBrains Mono
 ## Project Structure
 
 ```
-ecotrack/
+MahiKosh/
 ├── public/                  # Static files (SEO-optimized)
 │   ├── blog/               # 12 SEO blog articles
 │   ├── _redirects          # Netlify config
@@ -109,7 +109,7 @@ npm run start
 
 ## SEO Optimization
 
-EcoTrack is fully SEO-optimized for maximum search engine visibility:
+MahiKosh is fully SEO-optimized for maximum search engine visibility:
 
 | Optimization | Details |
 |---|---|
