@@ -297,6 +297,17 @@ If they ask about emissions, use the constants: Car=0.17, Bus=0.08, Train=0.04, 
 // Vite Dev Server / Production Servings
 // ----------------------------------------------------------------------
 async function startServer() {
+  // Serve public/static files (blog pages, robots.txt, sitemap.xml, etc.)
+  const publicPath = path.join(process.cwd(), "public");
+  app.use(express.static(publicPath, {
+    maxAge: process.env.NODE_ENV === "production" ? "7d" : 0,
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith(".html")) {
+        res.setHeader("Cache-Control", "public, max-age=0, must-revalidate");
+      }
+    },
+  }));
+
   if (process.env.NODE_ENV !== "production") {
     // Development Mode
     const vite = await createViteServer({
@@ -307,8 +318,12 @@ async function startServer() {
   } else {
     // Production Mode
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
+    app.use(express.static(distPath, {
+      maxAge: "1y",
+      immutable: true,
+    }));
+    // SPA fallback for app routes, but NOT for blog/* (those are static HTML)
+    app.get(/^\/(?!blog\/).*$/, (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
   }

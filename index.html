@@ -3,11 +3,149 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EcoTrack — AI Carbon Footprint Tracker and Sustainability</title>
+
+    <!-- Primary Meta Tags -->
+    <title>EcoTrack — AI Carbon Footprint Tracker for Sustainable Living</title>
+    <meta name="title" content="EcoTrack — AI-Powered Carbon Footprint Tracker & Sustainability App" />
+    <meta name="description" content="Track your carbon footprint with AI-powered EcoTrack. Log travel, meals, and energy to calculate CO₂ emissions, earn EcoBucks rewards, get personalized AI insights, and live more sustainably. Join thousands reducing their environmental impact." />
+    <meta name="keywords" content="carbon footprint tracker, AI carbon calculator, sustainability app, CO2 emissions tracker, eco-friendly living, carbon footprint calculator India, personal carbon tracker, green living app, EcoBucks, environmental impact tracker" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="author" content="EcoTrack" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ecotrack-solution.netlify.app/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ecotrack-solution.netlify.app/" />
+    <meta property="og:title" content="EcoTrack — AI Carbon Footprint Tracker for Sustainable Living" />
+    <meta property="og:description" content="Track, reduce, and offset your carbon footprint with AI-powered insights, gamification rewards, and personalized eco tips. Your complete sustainability companion." />
+    <meta property="og:image" content="https://ecotrack-solution.netlify.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="EcoTrack" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://ecotrack-solution.netlify.app/" />
+    <meta name="twitter:title" content="EcoTrack — AI Carbon Footprint Tracker" />
+    <meta name="twitter:description" content="Track your carbon footprint with AI. Log travel, meals & energy. Earn EcoBucks. Get personalized insights." />
+    <meta name="twitter:image" content="https://ecotrack-solution.netlify.app/og-image.jpg" />
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://firestore.googleapis.com" />
+    <link rel="preconnect" href="https://identitytoolkit.googleapis.com" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Structured Data: WebApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "EcoTrack",
+      "description": "AI-powered carbon footprint tracker and sustainability gamification platform. Track travel, meals, and home energy to calculate CO₂ emissions, earn rewards, and reduce your environmental impact.",
+      "url": "https://ecotrack-solution.netlify.app",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Web",
+      "browserRequirements": "Requires JavaScript. Modern browser recommended.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2027-12-31",
+        "availability": "https://schema.org/InStock"
+      },
+      "featureList": [
+        "AI-powered meal carbon footprint scanner",
+        "GPS travel tracking with CO₂ calculation",
+        "Home energy bill carbon calculator",
+        "Personalized AI sustainability insights",
+        "Gamification with EcoBucks rewards",
+        "Interactive carbon emission charts"
+      ],
+      "screenshot": "https://ecotrack-solution.netlify.app/og-image.jpg",
+      "softwareVersion": "1.0.0"
+    }
+    </script>
+
+    <!-- Structured Data: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "EcoTrack",
+      "url": "https://ecotrack-solution.netlify.app",
+      "description": "Building tools to make sustainable living measurable, motivating, and rewarding through AI-powered carbon tracking.",
+      "foundingDate": "2025",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "hello@ecotrack.app",
+        "contactType": "customer support"
+      }
+    }
+    </script>
+
+    <!-- Google Analytics (placeholder — replace G-XXXXXXXXXX with your ID) -->
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+    <!-- Google Search Console (placeholder — replace with your verification) -->
+    <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
+
+    <!-- Structured Data: FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a carbon footprint tracker?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A carbon footprint tracker is a tool that helps you measure and monitor your personal CO₂ emissions from daily activities like travel, food consumption, and home energy use. EcoTrack uses AI to make this process automatic and insightful."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does EcoTrack calculate my carbon footprint?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EcoTrack uses scientifically-backed emission factors tailored to the Indian context. It calculates CO₂ from travel (based on distance and mode), meals (using AI image recognition or manual entry), and home energy bills (electricity and gas usage in INR)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is EcoTrack free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, EcoTrack is completely free to use. You can track your carbon footprint, earn EcoBucks, get AI-powered insights, and redeem rewards without any cost."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are EcoBucks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EcoBucks are reward points earned by logging eco-friendly activities. Walking or biking earns the most EcoBucks. You can redeem them for rewards like tree planting, eco-store discounts, and carbon offset certificates."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

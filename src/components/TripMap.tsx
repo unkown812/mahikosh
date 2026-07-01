@@ -41,12 +41,13 @@ export default function TripMap({ trips, selectedTripId, onTripSelect, currentPo
     : [19.076, 72.877];
 
   return (
-    <MapContainer
-      center={center}
-      zoom={12}
-      className="w-full h-full rounded-xl"
-      zoomControl={true}
-    >
+    <figure className="w-full h-full">
+      <MapContainer
+        center={center}
+        zoom={12}
+        className="w-full h-full rounded-xl"
+        zoomControl={true}
+      >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -113,5 +114,6 @@ export default function TripMap({ trips, selectedTripId, onTripSelect, currentPo
 
       {allCoords.length > 0 && <FitBounds coords={allCoords} />}
     </MapContainer>
+    </figure>
   );
 }

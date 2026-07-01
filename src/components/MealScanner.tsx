@@ -252,7 +252,7 @@ export default function MealScanner({ onAddMeal, meals, onDeleteMeal }: MealScan
             <div className="p-4 bg-surface rounded-2xl border border-border-soft shadow-clay relative">
               <img
                 src={imagePreview}
-                alt="Meal preview"
+                alt="AI meal scanner food photo upload for carbon footprint analysis"
                 className="w-full h-44 object-cover rounded-xl border border-border"
               />
               <div className="absolute top-6 right-6 flex gap-2">

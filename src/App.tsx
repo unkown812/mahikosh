@@ -101,6 +101,16 @@ const LEVEL_LABELS: Record<number, string> = {
 
 type Tab = "dashboard" | "travel" | "food" | "energy" | "rewards" | "chatbot" | "tips";
 
+const TAB_TITLES: Record<string, string> = {
+  dashboard: "Dashboard — EcoTrack Carbon Footprint Tracker",
+  travel: "Travel CO₂ Tracker — EcoTrack Carbon Footprint",
+  food: "AI Meal Scanner — EcoTrack Carbon Footprint",
+  energy: "Home Energy Logger — EcoTrack Carbon Footprint",
+  rewards: "EcoBucks Rewards Marketplace — EcoTrack",
+  chatbot: "EcoBot AI Sustainability Assistant — EcoTrack",
+  tips: "Eco Tips & Sustainability Guide — EcoTrack",
+};
+
 export default function App() {
   const { user, loading: authLoading, isAvailable: authAvailable } = useAuth();
 
@@ -125,6 +135,10 @@ export default function App() {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [editName, setEditName] = useState("");
   const [editGoal, setEditGoal] = useState("");
+
+  useEffect(() => {
+    document.title = TAB_TITLES[activeTab] || "EcoTrack — AI Carbon Footprint Tracker";
+  }, [activeTab]);
 
   useEffect(() => {
     try {
