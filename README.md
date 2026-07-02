@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="public/favicon.svg" width="80" alt="MahiKosh Logo" />
+  <img src="public/favicon.png" width="80" alt="MahiKosh Logo" />
   <h1 align="center">MahiKosh</h1>
   <p align="center">
     <strong>AI-Powered Carbon Footprint Tracker & Sustainability Gamification Platform</strong>
@@ -183,6 +183,6 @@ VITE_USE_FIREBASE_EMULATORS=false
 npm run lint    # TypeScript strict mode type checking
 ```
 
-## License
+<!-- ## License -->
 
-Built with ❤️ for a sustainable future. Powered by Google Gemini AI.
+<p align="center">Built with ❤️ for a sustainable future.</p>
